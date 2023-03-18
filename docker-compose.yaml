@@ -1,0 +1,51 @@
+version: '3.8'
+
+#all the services that is currently running in this app
+services:
+  mongodb:
+    image: "mongo"
+    volumes:
+      - data:/data/db
+
+  backend:
+    build:
+      context: './server'
+      dockerfile: Dockerfile
+
+    ports: 
+      - 8000:8000
+
+    container_name: node-container
+ 
+
+    volumes:
+      - ./server:/app
+
+    depends_on:
+      - mongodb
+
+    env_file:
+      - ./server/.env
+
+  frontend:
+
+    build:
+      context: './client'
+      dockerfile: Dockerfile
+
+    ports:
+      - 3001:3001
+
+    container_name: react-container #evry container runs in a networks 
+ 
+
+          #volumes is requied if there is happening continous changes in the applications
+    volumes:
+      - ./client:/app
+
+    depends_on:
+      - backend
+
+volumes:
+  data:
+  logs:
