@@ -26,7 +26,8 @@ pipeline{
             }
         }
         
-      
+        
+        
         stage('Push image to Dockerhub'){
               environment {
         DOCKER_COMPOSE_FILE = 'docker-compose.yaml'
@@ -34,8 +35,6 @@ pipeline{
             steps{
                 script{
                     docker.withRegistry('',REGISTRY_CREDS){
-                        
-                    sh 'docker-compose -f $DOCKER_COMPOSE_FILE pull'
                     sh 'docker-compose -f $DOCKER_COMPOSE_FILE up -d'
                     }
                 }
